@@ -1,40 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import './TaskItem.css'
 
-export default function TaskItem({ task, updateTask, deleteTask }) {
-
-    const [values, setValues] = useState({
-        nombre: "",
-        apellido: "",
-        email: "",
-        telefono: "",
-        password: ""
-    });
-
-
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setValues({
-            ...values,
-            [name]: value,
-        });
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        alert("Registro realizado con éxito! \n\nBienvenido " + values.nombre + " " + values.apellido);
-    };
-
-
-    /* const handleEditableChange = (event) => {
-        const { name, value } = event.target;
-        setEditableData({
-            ...editableData,
-            [name]: value,
-        });
-    }; */
-
-
+export default function TaskItem({ task, updateTask, handleDelete }) {
 
     const [completada, setCompletada] = useState(false);
     const [editingMode, setEditingMode] = useState(false);
@@ -42,7 +9,6 @@ export default function TaskItem({ task, updateTask, deleteTask }) {
         titulo: editingMode ? task.titulo : '',
         descripcion: editingMode ? task.descripcion : '',
     });
-
 
     const handleEditableChange = (event) => {
         const { name, value } = event.target;
@@ -53,40 +19,27 @@ export default function TaskItem({ task, updateTask, deleteTask }) {
     };
 
     const handleSave = () => {
-        // Extraer los nuevos valores del estado editableData
         const { titulo, descripcion } = editableData;
 
-        console.log('Nuevos valores:', titulo, descripcion);
-
-        // Llamar a la función de actualización de la tarea desde las props
         updateTask(task.id, {
             titulo,
             descripcion,
           });
-          
 
-        // Actualizar el estado local después de llamar a updateTask
         setEditableData({
-            titulo: task.titulo,
-            descripcion: task.descripcion,
+            titulo: titulo,
+            descripcion: descripcion,
         });
 
-        // Salir del modo de edición
         setEditingMode(false);
     };
 
     useEffect(() => {
-        // Actualizar editableData cuando las props cambien
         setEditableData({
             titulo: task.titulo,
             descripcion: task.descripcion,
         });
     }, [task]);
-
-    const handleDelete = () => {
-        deleteTask(task.id);
-    };
-
 
 
     return (
@@ -130,7 +83,7 @@ export default function TaskItem({ task, updateTask, deleteTask }) {
                     }} className="btn btn-secondary">
                         {editingMode ? 'Guardar' : 'Editar'}
                     </a>
-                    <a onClick={handleDelete} className="btn btn-danger">
+                    <a onClick={() => handleDelete(task.id)} className="btn btn-danger">
                         Eliminar
                     </a>
                 </div>

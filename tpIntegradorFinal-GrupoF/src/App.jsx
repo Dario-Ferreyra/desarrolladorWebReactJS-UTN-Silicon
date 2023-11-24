@@ -1,10 +1,9 @@
 import './App.css'
-import TaskList from './components/TaskList/TaskList'
+import TaskContainer from './components/TaskContainer/TaskContainer'
 
-function App() {
-
+function App() {  
   return (
-    <TaskList/>
+    <TaskContainer/>
   )
 }
 
